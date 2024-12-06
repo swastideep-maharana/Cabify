@@ -25,22 +25,24 @@ const userSchema = new mongoose.Schema({
     required: true,
     select: false,
   },
-
-  soketId: {
+  socketId: {
     type: String,
   },
 });
 
-userSchema.methods.gemerateAuthToken = function () {
+// Fix method name
+userSchema.methods.generateAuthToken = function () {
   const token = jwt.sign({ _id: this._id }, process.env.JWT_SECRET);
   return token;
 };
 
+// Compare Password
 userSchema.methods.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
-userSchema.static.hashPassword = async function (password) {
+// Static Method to Hash Password
+userSchema.statics.hashPassword = async function (password) {
   return await bcrypt.hash(password, 10);
 };
 
