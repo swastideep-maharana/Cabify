@@ -69,7 +69,7 @@ const CaptainLogin = () => {
         <p className="mt-4 text-center text-base text-gray-600">
           Don't have an account?{" "}
           <Link
-            to="/signup"
+            to="/captain-signup"
             className="text-green-600 font-medium hover:text-green-700"
           >
             Register as a Captain
