@@ -114,7 +114,7 @@ const UserSignup = () => {
 
           {/* Submit Button */}
           <button className="w-full bg-teal-600 text-white text-sm font-medium py-2 rounded-lg hover:bg-teal-700 transition-all duration-300 transform hover:scale-105">
-            Sign Up
+            Create Account
           </button>
 
           <p className="text-center mt-6 text-sm text-gray-600">
