@@ -1,111 +1,175 @@
-import React from 'react'
+import React from "react";
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const CaptainSignup = () => {
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [vehicleColor, setVehicleColor] = useState("");
+  const [vehiclePlate, setVehiclePlate] = useState("");
+  const [vehicleCapacity, setVehicleCapacity] = useState("");
+  const [vehicleType, setVehicleType] = useState("");
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    const userData = {
+      username: {
+        firstName,
+        lastName,
+      },
+      email,
+      password,
+      vehicle: {
+        color: vehicleColor,
+        plate: vehiclePlate,
+        capacity: vehicleCapacity,
+        type: vehicleType,
+      },
+    };
+    console.log(userData);
+    navigate("/success");
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-pink-200 via-purple-200 to-indigo-300 relative overflow-hidden">
-    {/* Background Decorations */}
-    <div className="absolute top-10 left-10 w-80 h-80 bg-yellow-100 opacity-30 rounded-full blur-3xl -z-10"></div>
-    <div className="absolute bottom-10 right-10 w-80 h-80 bg-green-100 opacity-30 rounded-full blur-3xl -z-10"></div>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-300 via-blue-200 to-cyan-300 relative overflow-hidden">
+      {/* Background Decorations */}
+      <div className="absolute top-10 left-10 w-80 h-80 bg-orange-100 opacity-30 rounded-full blur-3xl -z-10"></div>
+      <div className="absolute bottom-10 right-10 w-80 h-80 bg-purple-100 opacity-30 rounded-full blur-3xl -z-10"></div>
 
-    {/* Login Form */}
-    <div className="bg-white p-8 sm:p-12 rounded-xl shadow-lg w-full max-w-lg mx-auto z-20">
-      <header className="mb-6 text-center">
-        <h1 className="text-4xl font-semibold text-gray-900 tracking-tight">
-          Cabify
-        </h1>
-      </header>
+      {/* Login Form */}
+      <div className="bg-white p-8 sm:p-12 rounded-xl shadow-lg w-full max-w-lg mx-auto z-20">
+        <header className="mb-6 text-center">
+          <h1 className="text-4xl font-semibold text-gray-900 tracking-tight">
+            Cabify Captain
+          </h1>
+        </header>
 
-      <form onSubmit={submitHandler}>
-        <h2 className="text-xl font-medium text-gray-800 mb-6 text-center">
-          Welcome Back!
-        </h2>
-        <p className="text-gray-600 mb-6 text-center text-base">
-          Log in to continue your journey with us.
-        </p>
-        <h3 className="text-lg w-1/2  font-medium mb-2">What's your name</h3>
-        <div className="flex gap-4 mb-7">
+        <form onSubmit={submitHandler}>
+          <h2 className="text-xl font-medium text-gray-800 mb-6 text-center">
+            Welcome Back!
+          </h2>
+          <p className="text-gray-600 mb-6 text-center text-base">
+            Create an account to continue your journey with us.
+          </p>
+          <h3 className="text-lg w-full font-medium mb-2">
+            What's our Captain's name
+          </h3>
+          <div className="flex gap-4 mb-7">
+            <input
+              required
+              className="bg-[#f3f4f6] w-1/2 rounded-lg px-4 py-2 border text-lg placeholder:text-base"
+              type="text"
+              placeholder="First name"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+            <input
+              required
+              className="bg-[#f3f4f6] w-1/2 rounded-lg px-4 py-2 border text-lg placeholder:text-base"
+              type="text"
+              placeholder="Last name"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            />
+          </div>
+
+          <h3 className="text-lg font-medium mb-2">
+            What's our Captain's email
+          </h3>
           <input
             required
-            className="bg-[#eeeeee] w-1/2 rounded-lg px-4 py-2 border  text-lg placeholder:text-base"
-            type="text"
-            placeholder="First name"
-            value={firstName}
-            onChange={(e) => {
-              setFirstName(e.target.value);
-            }}
-          />
-          <input
-            required
-            className="bg-[#eeeeee] w-1/2  rounded-lg px-4 py-2 border  text-lg placeholder:text-base"
-            type="text"
-            placeholder="Last name"
-            value={lastName}
-            onChange={(e) => {
-              setLastName(e.target.value);
-            }}
-          />
-        </div>
-        {/* Email Input */}
-        <div className="mb-6">
-          <label htmlFor="email" className="block text-base font-medium mb-2">
-            Email Address
-          </label>
-          <input
-            required
-            id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full bg-gray-100 rounded-lg px-4 py-3 border border-gray-300 text-gray-800 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200"
+            className="bg-[#f3f4f6] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base"
             type="email"
             placeholder="email@example.com"
           />
-        </div>
 
-        {/* Password Input */}
-        <div className="mb-8">
-          <label
-            htmlFor="password"
-            className="block text-base font-medium mb-2"
-          >
-            Password
-          </label>
+          <h3 className="text-lg font-medium mb-2">Enter Password</h3>
+
           <input
-            required
-            id="password"
+            className="bg-[#f3f4f6] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full bg-gray-100 rounded-lg px-4 py-3 border border-gray-300 text-gray-800 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200"
+            required
             type="password"
-            placeholder="Enter your password"
+            placeholder="password"
           />
+
+          <h3 className="text-lg font-medium mb-2">Vehicle Information</h3>
+          <div className="flex gap-4 mb-7">
+            <input
+              required
+              className="bg-[#f3f4f6] w-1/2 rounded-lg px-4 py-2 border text-lg placeholder:text-base"
+              type="text"
+              placeholder="Vehicle Color"
+              value={vehicleColor}
+              onChange={(e) => setVehicleColor(e.target.value)}
+            />
+            <input
+              required
+              className="bg-[#f3f4f6] w-1/2 rounded-lg px-4 py-2 border text-lg placeholder:text-base"
+              type="text"
+              placeholder="Vehicle Plate"
+              value={vehiclePlate}
+              onChange={(e) => setVehiclePlate(e.target.value)}
+            />
+          </div>
+          <div className="flex gap-4 mb-7">
+            <input
+              required
+              className="bg-[#f3f4f6] w-1/2 rounded-lg px-4 py-2 border text-lg placeholder:text-base"
+              type="number"
+              placeholder="Vehicle Capacity"
+              value={vehicleCapacity}
+              onChange={(e) => setVehicleCapacity(e.target.value)}
+            />
+            <select
+              required
+              className="bg-[#f3f4f6] w-1/2 rounded-lg px-4 py-2 border text-lg placeholder:text-base"
+              value={vehicleType}
+              onChange={(e) => setVehicleType(e.target.value)}
+            >
+              <option value="" disabled>
+                Select Vehicle Type
+              </option>
+              <option value="car">Car</option>
+              <option value="auto">Auto</option>
+              <option value="moto">Moto</option>
+            </select>
+          </div>
+
+          {/* Submit Button */}
+          <button className="w-full bg-blue-600 text-white text-lg font-medium py-3 rounded-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105">
+            Signup
+          </button>
+
+          <p className="text-center mt-6 text-base text-gray-600">
+            Already have an account?{" "}
+            <Link
+              to="/captain-login"
+              className="text-blue-600 font-medium hover:text-blue-700"
+            >
+              Login as Captain
+            </Link>
+          </p>
+        </form>
+
+        <div>
+          <p className="text-[10px] mt-6 leading-tight">
+            This site is protected by reCAPTCHA and the{" "}
+            <span className="underline">Google Privacy Policy</span> and{" "}
+            <span className="underline">Terms of Service apply</span>.
+          </p>
         </div>
-
-        {/* Submit Button */}
-        <button className="w-full bg-pink-600 text-white text-lg font-medium py-3 rounded-lg hover:bg-pink-700 transition-all duration-300 transform hover:scale-105">
-          Signup
-        </button>
-
-        <p className="text-center mt-6 text-base text-gray-600">
-          Already have an account?{" "}
-          <Link
-            to="/login"
-            className="text-pink-600 font-medium hover:text-pink-700"
-          >
-            Login
-          </Link>
-        </p>
-      </form>
-
-      <div>
-        <p className="text-[10px] leading-tight">
-          This site is protected by reCAPTCHA and the{" "}
-          <span className="underline">Google Privacy Policy</span> and{" "}
-          <span className="underline">Terms of Service apply</span>.
-        </p>
       </div>
     </div>
-  </div>
-  )
-}
+  );
+};
 
-export default CaptainSignup
+export default CaptainSignup;
