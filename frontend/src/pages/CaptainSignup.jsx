@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { CaptainDataContext } from "../context/CaptainContext";
+import axios from "axios";
 
 const CaptainSignup = () => {
   const navigate = useNavigate();
@@ -15,12 +17,14 @@ const CaptainSignup = () => {
   const [vehicleCapacity, setVehicleCapacity] = useState("");
   const [vehicleType, setVehicleType] = useState("");
 
+  const { captain, setCaptain } = React.useContext(CaptainDataContext);
+
   const submitHandler = async (e) => {
     e.preventDefault();
-    const userData = {
+    const captainData = {
       fullname: {
-        firstName,
-        lastName,
+        firstname: firstName,
+        lastname: lastName,
       },
       email,
       password,
@@ -28,11 +32,30 @@ const CaptainSignup = () => {
         color: vehicleColor,
         plate: vehiclePlate,
         capacity: vehicleCapacity,
-        type: vehicleType,
+        vehicleType: vehicleType,
       },
     };
-    console.log(userData);
-    navigate("/success");
+
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/captains/register`,
+      captainData
+    );
+
+    if (response.status === 201) {
+      const data = response.data;
+      setCaptain(data.captain);
+      localStorage.setItem("token", data.token);
+      navigate("/captain-home");
+    }
+
+    setEmail("");
+    setFirstName("");
+    setLastName("");
+    setPassword("");
+    setVehicleColor("");
+    setVehiclePlate("");
+    setVehicleCapacity("");
+    setVehicleType("");
   };
 
   return (
@@ -146,7 +169,7 @@ const CaptainSignup = () => {
 
           {/* Submit Button */}
           <button className="w-full bg-blue-600 text-white text-lg font-medium py-3 rounded-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105">
-            Signup
+            Create Captain Account
           </button>
 
           <p className="text-center mt-6 text-base text-gray-600">
