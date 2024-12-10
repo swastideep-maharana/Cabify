@@ -12,7 +12,7 @@ const UserSignup = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     setUserData({
-      username: {
+      fullName: {
         firstName,
         lastName,
       },
@@ -119,7 +119,10 @@ const UserSignup = () => {
 
           <p className="text-center mt-6 text-sm text-gray-600">
             Already have an account?{" "}
-            <Link to="/login" className="text-teal-600 font-medium hover:text-teal-700">
+            <Link
+              to="/login"
+              className="text-teal-600 font-medium hover:text-teal-700"
+            >
               Login
             </Link>
           </p>
