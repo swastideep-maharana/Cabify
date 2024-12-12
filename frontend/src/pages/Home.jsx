@@ -4,15 +4,18 @@ import { useGSAP } from "@gsap/react";
 import "remixicon/fonts/remixicon.css";
 import LocationSearchPanel from "../components/LocationSearchPanel";
 import VehiclePanel from "../components/VehiclePanel";
+import ConfirmedRide from "../components/ConfirmedRide";
 
 const Home = () => {
   const [pickup, setPickup] = useState("");
   const [destination, setDestination] = useState("");
   const [panelOpen, setPanelOpen] = useState(false);
   const vehiclePanelRef = useRef(null);
+  const ConfirmedRidePanelRef = useRef(null);
   const panelRef = useRef(null);
   const panelCloseRef = useRef(null);
   const [vehiclePanel, setVehiclePanel] = useState(false);
+  const [confirmRidePanel, setConfirmRidePanel] = useState(false);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -66,6 +69,25 @@ const Home = () => {
       }
     },
     [vehiclePanel]
+  );
+
+  useGSAP(
+    function () {
+      if (confirmRidePanel) {
+        gsap.to(ConfirmedRidePanelRef.current, {
+          transform: "translateY(0)",
+          duration: 0.5,
+          ease: "power2.out",
+        });
+      } else {
+        gsap.to(ConfirmedRidePanelRef.current, {
+          transform: "translateY(100%)",
+          duration: 0.5,
+          ease: "power2.in",
+        });
+      }
+    },
+    [confirmRidePanel]
   );
 
   const handleFocus = () => {
@@ -138,9 +160,19 @@ const Home = () => {
       {/* Vehicle selection panel */}
       <div
         ref={vehiclePanelRef}
-        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-8"
+        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-14"
       >
-        <VehiclePanel setVehiclePanel={setVehiclePanel} />
+        <VehiclePanel
+          setConfirmRidePanel={setConfirmRidePanel}
+          setVehiclePanel={setVehiclePanel}
+        />
+      </div>
+
+      <div
+        ref={ConfirmedRidePanelRef}
+        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12"
+      >
+        <ConfirmedRide />
       </div>
     </div>
   );
