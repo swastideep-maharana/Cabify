@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
 import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
 import "remixicon/fonts/remixicon.css";
 import LocationSearchPanel from "../components/LocationSearchPanel";
 import VehiclePanel from "../components/VehiclePanel";
@@ -20,7 +19,6 @@ const Home = () => {
   const panelCloseRef = useRef(null);
   const [vehiclePanel, setVehiclePanel] = useState(false);
   const [confirmRidePanel, setConfirmRidePanel] = useState(false);
-
   const [vehicleFound, setVehicleFound] = useState(false);
   const [waitingForDriver, setWaitingForDriver] = useState(false);
 
@@ -29,11 +27,10 @@ const Home = () => {
     console.log("Pickup:", pickup, "Destination:", destination);
   };
 
-  // GSAP effect for opening/closing the panel
   useEffect(() => {
     if (panelOpen) {
       gsap.to(panelRef.current, {
-        height: "70%", // Panel height
+        height: "70%",
         opacity: 1,
         padding: "20px",
         duration: 0.5,
@@ -58,91 +55,39 @@ const Home = () => {
     }
   }, [panelOpen]);
 
-  // GSAP effect for vehicle panel
-  useGSAP(
-    function () {
-      if (vehiclePanel) {
-        gsap.to(vehiclePanelRef.current, {
-          transform: "translateY(0)",
-          duration: 0.5,
-          ease: "power2.out",
-        });
-      } else {
-        gsap.to(vehiclePanelRef.current, {
-          transform: "translateY(100%)",
-          duration: 0.5,
-          ease: "power2.in",
-        });
-      }
-    },
+  const handlePanelAnimation = (ref, isOpen) => {
+    gsap.to(ref.current, {
+      transform: isOpen ? "translateY(0)" : "translateY(100%)",
+      duration: 0.5,
+      ease: "power2.out",
+    });
+  };
+
+  useEffect(
+    () => handlePanelAnimation(vehiclePanelRef, vehiclePanel),
     [vehiclePanel]
   );
-
-  useGSAP(
-    function () {
-      if (confirmRidePanel) {
-        gsap.to(ConfirmedRidePanelRef.current, {
-          transform: "translateY(0)",
-          duration: 0.5,
-          ease: "power2.out",
-        });
-      } else {
-        gsap.to(ConfirmedRidePanelRef.current, {
-          transform: "translateY(100%)",
-          duration: 0.5,
-          ease: "power2.in",
-        });
-      }
-    },
+  useEffect(
+    () => handlePanelAnimation(ConfirmedRidePanelRef, confirmRidePanel),
     [confirmRidePanel]
   );
-
-  useGSAP(
-    function () {
-      if (vehicleFound) {
-        gsap.to(vehiclefoundRef.current, {
-          transform: "translateY(0)",
-          duration: 0.5,
-          ease: "power2.out",
-        });
-      } else {
-        gsap.to(vehiclePanelRef.current, {
-          transform: "translateY(100%)",
-          duration: 0.5,
-          ease: "power2.in",
-        });
-      }
-    },
+  useEffect(
+    () => handlePanelAnimation(vehiclefoundRef, vehicleFound),
     [vehicleFound]
   );
-
-  useGSAP(
-    function () {
-      if (waitingForDriver) {
-        gsap.to(waitingForDriverRef.current, {
-          transform: "translateY(0)",
-          duration: 0.5,
-          ease: "power2.out",
-        });
-      } else {
-        gsap.to(waitingForDriverRef.current, {
-          transform: "translateY(100%)",
-          duration: 0.5,
-          ease: "power2.in",
-        });
-      }
-    },
+  useEffect(
+    () => handlePanelAnimation(waitingForDriverRef, waitingForDriver),
     [waitingForDriver]
   );
 
   const handleFocus = () => {
-    setPanelOpen(true); // Open the panel when either of the inputs is focused
+    setPanelOpen(true);
   };
 
   return (
-    <div className="h-screen relative overflow-hidden">
+    <div className="h-screen relative overflow-hidden font-sans bg-gray-50">
       <header className="absolute left-5 top-5">
-        <h1 className="text-4xl font-semibold text-gray-900 tracking-tight">
+        <h1 className="text-4xl font-bold text-gray-800 tracking-tight shadow-md">
           Cabify
         </h1>
       </header>
@@ -151,7 +96,7 @@ const Home = () => {
         onClick={() => {
           setVehiclePanel(false);
         }}
-        className="h-screen w-screen"
+        className="h-screen w-screen relative"
       >
         <img
           className="h-full w-full object-cover"
@@ -160,25 +105,27 @@ const Home = () => {
         />
       </main>
 
-      <section className="bg-white flex flex-col justify-end absolute bottom-0 w-full">
-        <div className="h-[30%] p-6 bg-white relative">
+      <section className="absolute bottom-0 w-full">
+        <div className="h-[30%] p-6 bg-white rounded-t-3xl shadow-lg relative">
           <h5
             ref={panelCloseRef}
             onClick={() => setPanelOpen(false)}
-            className={`absolute right-6 top-6 text-2xl cursor-pointer ${
-              panelOpen ? "opacity-1" : "opacity-0"
+            className={`absolute right-6 top-6 text-2xl cursor-pointer transition-opacity duration-300 ${
+              panelOpen ? "opacity-100" : "opacity-0"
             }`}
           >
-            <i className="ri-arrow-down-wide-line"></i>
+            <i className="ri-arrow-down-s-line text-gray-600"></i>
           </h5>
-          <h4 className="text-3xl font-semibold">Find a trip</h4>
+          <h4 className="text-3xl font-semibold text-gray-800 mb-4">
+            Find a trip
+          </h4>
           <form onSubmit={submitHandler}>
             <div className="line absolute h-16 w-1 top-[45%] left-10 bg-gray-900 rounded-full"></div>
             <input
               value={pickup}
               onChange={(e) => setPickup(e.target.value)}
               onFocus={handleFocus}
-              className="bg-gray-200 px-8 py-2 text-base rounded-lg w-full mt-5"
+              className="bg-gray-100 px-8 py-2 text-base rounded-lg w-full mb-4 shadow-inner focus:outline-none focus:ring-2 focus:ring-blue-500"
               type="text"
               placeholder="Add a pick-up location"
             />
@@ -186,7 +133,7 @@ const Home = () => {
               value={destination}
               onChange={(e) => setDestination(e.target.value)}
               onFocus={handleFocus}
-              className="bg-gray-200 px-8 py-2 text-base rounded-lg w-full mt-5"
+              className="bg-gray-100 px-8 py-2 text-base rounded-lg w-full shadow-inner focus:outline-none focus:ring-2 focus:ring-blue-500"
               type="text"
               placeholder="Enter your destination"
             />
@@ -202,10 +149,9 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Vehicle selection panel */}
       <div
         ref={vehiclePanelRef}
-        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-14"
+        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-4 py-6 pt-10 rounded-t-3xl shadow-lg"
       >
         <VehiclePanel
           setConfirmRidePanel={setConfirmRidePanel}
@@ -215,7 +161,7 @@ const Home = () => {
 
       <div
         ref={ConfirmedRidePanelRef}
-        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12"
+        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-4 py-6 pt-10 rounded-t-3xl shadow-lg"
       >
         <ConfirmedRide
           setConfirmRidePanel={setConfirmRidePanel}
@@ -225,16 +171,16 @@ const Home = () => {
 
       <div
         ref={vehiclefoundRef}
-        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12"
+        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-4 py-6 pt-10 rounded-t-3xl shadow-lg"
       >
         <LookingForDriver setVehicleFound={setVehicleFound} />
       </div>
 
       <div
         ref={waitingForDriverRef}
-        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12"
+        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-4 py-6 pt-10 rounded-t-3xl shadow-lg"
       >
-        <WaitingForDriver  waitingForDriver={waitingForDriver}/>
+        <WaitingForDriver waitingForDriver={waitingForDriver} />
       </div>
     </div>
   );
