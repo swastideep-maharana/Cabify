@@ -6,6 +6,7 @@ import LocationSearchPanel from "../components/LocationSearchPanel";
 import VehiclePanel from "../components/VehiclePanel";
 import ConfirmedRide from "../components/ConfirmedRide";
 import LookingForDriver from "../components/LookingForDriver";
+import WaitingForDriver from "../components/WaitingForDriver";
 
 const Home = () => {
   const [pickup, setPickup] = useState("");
@@ -14,12 +15,14 @@ const Home = () => {
   const vehiclePanelRef = useRef(null);
   const ConfirmedRidePanelRef = useRef(null);
   const vehiclefoundRef = useRef(null);
+  const waitingForDriverRef = useRef(null);
   const panelRef = useRef(null);
   const panelCloseRef = useRef(null);
   const [vehiclePanel, setVehiclePanel] = useState(false);
   const [confirmRidePanel, setConfirmRidePanel] = useState(false);
 
   const [vehicleFound, setVehicleFound] = useState(false);
+  const [waitingForDriver, setWaitingForDriver] = useState(false);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -111,6 +114,25 @@ const Home = () => {
       }
     },
     [vehicleFound]
+  );
+
+  useGSAP(
+    function () {
+      if (waitingForDriver) {
+        gsap.to(waitingForDriverRef.current, {
+          transform: "translateY(0)",
+          duration: 0.5,
+          ease: "power2.out",
+        });
+      } else {
+        gsap.to(waitingForDriverRef.current, {
+          transform: "translateY(100%)",
+          duration: 0.5,
+          ease: "power2.in",
+        });
+      }
+    },
+    [waitingForDriver]
   );
 
   const handleFocus = () => {
@@ -205,7 +227,14 @@ const Home = () => {
         ref={vehiclefoundRef}
         className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12"
       >
-        <LookingForDriver />
+        <LookingForDriver setVehicleFound={setVehicleFound} />
+      </div>
+
+      <div
+        ref={waitingForDriverRef}
+        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12"
+      >
+        <WaitingForDriver  waitingForDriver={waitingForDriver}/>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import React from "react";
 
-const LookingForDriver = () => {
+const LookingForDriver = (props) => {
   return (
     <div>
       {" "}
@@ -8,7 +8,7 @@ const LookingForDriver = () => {
         <h5
           className="p-1 text-center w-[93%] absolute top-0"
           onClick={() => {
-            props.setConfirmRidePanel(false);
+            props.setVehicleFound(false);
           }}
         >
           {" "}
