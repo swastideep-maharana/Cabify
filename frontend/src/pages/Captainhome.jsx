@@ -1,36 +1,100 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import CaptainDetails from "../components/CaptainDetails";
+import RidePopup from "../components/RidePopup";
+import gsap from "gsap";
+import ConfirmRidePopup from "../components/ConfirmRidePopup";
 
 const Captainhome = () => {
+  const [ridePopupPanel, setRidePopupPanel] = useState(true);
+  const [confirmridePopupPanel, setConfirmRidePopupPanel] = useState(false);
+
+  const ridePopupPanelRef = React.useRef(null);
+  const confirmridePopupPanelRef = React.useRef(null);
+
+  React.useLayoutEffect(() => {
+    if (ridePopupPanel) {
+      gsap.to(ridePopupPanelRef.current, {
+        transform: "translateY(0)",
+        duration: 0.5,
+        ease: "power2.out",
+      });
+    } else {
+      gsap.to(ridePopupPanelRef.current, {
+        transform: "translateY(100%)",
+        duration: 0.5,
+        ease: "power2.in",
+      });
+    }
+  }, [ridePopupPanel]);
+
+  React.useLayoutEffect(() => {
+    if (confirmridePopupPanel) {
+      gsap.to(confirmridePopupPanelRef.current, {
+        transform: "translateY(0)",
+        duration: 0.5,
+        ease: "power2.out",
+      });
+    } else {
+      gsap.to(confirmridePopupPanelRef.current, {
+        transform: "translateY(100%)",
+        duration: 0.5,
+        ease: "power2.in",
+      });
+    }
+  }, [confirmridePopupPanel]);
+
   return (
-    <div className="h-screen">
-      {/* Home Button */}
-      <div className="fixed p-6 top-0 flex items-center justify-between w-screen">
-        <header className="absolute left-5 top-5">
-          <h1 className="text-4xl font-bold text-gray-800 tracking-tight shadow-md">
+    <div className="h-screen bg-gray-100">
+      {/* Transparent Header Section with Logo and Logout Button */}
+      <div className="fixed w-full p-4 top-0 bg-transparent z-20">
+        <div className="flex justify-between items-center">
+          <h1 className="text-4xl font-bold text-indigo-700 tracking-tight">
             Cabify
           </h1>
-        </header>
-        <Link
-          to="/home"
-          className="fixed right-4 top-4 h-12 w-12 bg-white shadow-lg flex items-center justify-center rounded-full z-10 hover:shadow-xl transition-transform transform hover:scale-105"
-        >
-          <i class="ri-logout-box-r-line"></i>
-        </Link>
+          <Link
+            to="/home"
+            className="h-12 w-12 bg-indigo-600 text-white flex items-center justify-center rounded-full shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl"
+          >
+            <i className="ri-logout-box-r-line text-xl"></i>
+          </Link>
+        </div>
       </div>
 
+      {/* Background Image Section */}
       <div className="h-3/5 p-6">
         <img
           className="h-full w-full object-cover rounded-xl shadow-lg"
           src="https://simonpan.com/wp-content/themes/sp_portfolio/assets/uber-challenge.jpg"
-          alt="Background"
+          alt="Cab Background"
         />
       </div>
 
-      {/* Top Section with Image */}
-      <div className="h-2/5 p-6">
-          <CaptainDetails />
+      {/* Captain Details Section */}
+      <div className="h-2/5 p-6 bg-white rounded-xl shadow-md mb-6">
+        <CaptainDetails />
+      </div>
+
+      {/* Ride Popup Section */}
+      <div
+        ref={ridePopupPanelRef}
+        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-6 py-6 rounded-t-3xl shadow-lg"
+      >
+        <RidePopup
+          setRidePopupPanel={setRidePopupPanel}
+          setConfirmRidePopupPanel={setConfirmRidePopupPanel}
+        />
+      </div>
+
+      {/* Confirm Ride Popup Section */}
+      <div
+        ref={confirmridePopupPanelRef}
+        className="fixed w-full h-screen z-10 bottom-0 translate-y-full bg-white px-6 py-6 rounded-t-3xl shadow-lg"
+      >
+        <ConfirmRidePopup
+          setConfirmRidePopupPanel={setConfirmRidePopupPanel}
+          setRidePopupPanel={setRidePopupPanel}
+        />
       </div>
     </div>
   );

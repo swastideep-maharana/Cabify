@@ -2,37 +2,39 @@ import React from "react";
 
 const CaptainDetails = () => {
   return (
-    <div>
-      {" "}
-      <div className="flex items-center justify-between">
-        <div className="flex itesms-center justify-start gap-3">
+    <div className="bg-white p-6 rounded-xl shadow-lg">
+      {/* Captain Info Section */}
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-3">
           <img
-            className="h-10 w-10 rounded-full object-cover"
+            className="h-12 w-12 rounded-full object-cover border-2 border-indigo-500"
             src="https://img.freepik.com/free-photo/young-adult-man-wearing-hoodie-beanie_23-2149393636.jpg"
-            alt=""
+            alt="Captain"
           />
-          <h4 className="text-lg font-medium">Harsh Patel</h4>
+          <h4 className="text-2xl font-semibold text-indigo-800">Harsh Patel</h4>
         </div>
-        <div>
-          <h4 className="text-xl font-semibold">₹295</h4>
-          <p className="text-sm font-medium text-gray-600">Earned</p>
+        <div className="text-right">
+          <h4 className="text-2xl font-bold text-indigo-600">₹295</h4>
+          <p className="text-sm font-medium text-gray-500">Earned</p>
         </div>
       </div>
-      <div className="flex p-3 mt-6 bg-gray-100 rounded-xl justify-center gap-5 items-start">
-        <div className="text-center">
-          <i className="text-3xl mb-2 font-thin ri-time-line"></i>
-          <h5 className="text-lg font-medium">10.2</h5>
-          <p className="text-sm text-gry-600">Hours Online</p>
+
+      {/* Stats Section */}
+      <div className="flex p-4 bg-indigo-50 rounded-xl justify-between gap-6">
+        <div className="text-center flex-1">
+          <i className="text-3xl mb-2 font-thin ri-time-line text-indigo-600"></i>
+          <h5 className="text-xl font-medium text-indigo-800">10.2</h5>
+          <p className="text-sm text-gray-600">Hours Online</p>
         </div>
-        <div className="text-center">
-          <i className="text-3xl mb-2 font-thin ri-speed-up-line"></i>
-          <h5 className="text-lg font-medium">10.2</h5>
-          <p className="text-sm text-gry-600">Hours Online</p>
+        <div className="text-center flex-1">
+          <i className="text-3xl mb-2 font-thin ri-speed-up-line text-indigo-600"></i>
+          <h5 className="text-xl font-medium text-indigo-800">10.2</h5>
+          <p className="text-sm text-gray-600">Rides Completed</p>
         </div>
-        <div className="text-center">
-          <i className="text-3xl mb-2 font-thin ri-booklet-line"></i>
-          <h5 className="text-lg font-medium">10.2</h5>
-          <p className="text-sm text-gry-600">Hours Online</p>
+        <div className="text-center flex-1">
+          <i className="text-3xl mb-2 font-thin ri-booklet-line text-indigo-600"></i>
+          <h5 className="text-xl font-medium text-indigo-800">10.2</h5>
+          <p className="text-sm text-gray-600">Rating</p>
         </div>
       </div>
     </div>
