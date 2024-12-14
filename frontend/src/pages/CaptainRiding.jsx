@@ -1,10 +1,32 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
+import { useGSAP } from '@gsap/react';
+import gsap from "gsap";
+import FinishRide from "../components/FinishRide";
 
-const CaptainRiding = () => {
+const CaptainRiding = (props) => {
+  const [finishRidePanel, setFinishRidePanel] = useState(false);
+  const finishRidePanelRef = useRef(null);
+
+  // GSAP animation for finish ride panel
+  useGSAP(
+    () => {
+      gsap.to(finishRidePanelRef.current, {
+        transform: finishRidePanel ? "translateY(0)" : "translateY(100%)",
+        duration: 0.5, // Adjust the duration for smoothness
+        ease: "power3.out", // Apply easing for smooth animation
+      });
+    },
+    [finishRidePanel] // Re-run when the finishRidePanel state changes
+  );
+
+  const handleCompleteRide = () => {
+    setFinishRidePanel(true); // Trigger the panel to show
+  };
+
   return (
     <div className="h-screen relative">
-      {/* Transparent Header Section with Logo and Logout Button */}
+      {/* Transparent Header Section */}
       <div className="fixed w-full p-4 top-0 bg-transparent z-20">
         <div className="flex justify-between items-center">
           <h1 className="text-4xl font-bold text-indigo-700 tracking-tight">
@@ -29,17 +51,22 @@ const CaptainRiding = () => {
       </div>
 
       {/* Captain Details Section */}
-      <div className="h-1/5 p-6 bg-yellow-400 flex relative items-center justify-between">
-        <h5
-          className="absolute top-4 right-4 cursor-pointer p-2 hover:text-gray-700 transition-all"
-          onClick={() => {}}
-        >
-          <i className="text-4xl ri-arrow-down-circle-line text-black hover:text-gray-700"></i>
-        </h5>
+      <div
+        className="h-1/5 p-6 bg-yellow-400 flex items-center justify-between relative"
+        onClick={handleCompleteRide} // Trigger the panel on click
+      >
         <h4 className="text-xl font-semibold">4 KM away</h4>
-        <button className="  bg-green-600 text-white font-semibold p-3 rounded-lg">
+        <button className="bg-green-600 text-white font-semibold px-4 py-2 rounded-lg">
           Complete Ride
         </button>
+      </div>
+
+      {/* Finish Ride Panel */}
+      <div
+        ref={finishRidePanelRef}
+        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-6 py-6 rounded-t-3xl shadow-lg"
+      >
+        <FinishRide setFinishRidePanel={setFinishRidePanel} />
       </div>
     </div>
   );

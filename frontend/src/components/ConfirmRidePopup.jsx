@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const ConfirmRidePopup = (props) => {
+  const [otp, setOtp] = useState("");
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+  };
   return (
     <div className="fixed inset-0 bg-opacity-70 bg-gray-900 flex justify-center items-center z-50">
       <div className="w-full h-full bg-gradient-to-r from-blue-300 via-blue-200 to-blue-100 rounded-lg shadow-xl p-6 flex flex-col justify-between">
@@ -67,23 +72,36 @@ const ConfirmRidePopup = (props) => {
         {/* Buttons */}
         <div className="mt-auto space-y-4 flex flex-col justify-center items-center">
           {/* Confirm Button */}
-          <Link
-            to="/captain-riding"
-            className="w-full max-w-md h-12 bg-green-600 text-white font-semibold flex items-center justify-center rounded-lg hover:bg-green-700 transition-all shadow-xl focus:ring-4 focus:ring-green-300 focus:outline-none"
-          >
-            Confirm
-          </Link>
-
-          {/* Cancel Button */}
-          <button
-            onClick={() => {
-              props.setConfirmRidePopupPanel(false);
-              props.setRidePopupPanel(false);
+          <form
+            onSubmit={(e) => {
+              sumbmitHandler(e);
             }}
-            className="w-full max-w-md h-12 bg-red-500 text-white font-semibold flex items-center justify-center rounded-lg hover:bg-red-600 transition-all shadow-xl focus:ring-4 focus:ring-red-300 focus:outline-none"
           >
-            Cancel
-          </button>
+            <input
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              type="text"
+              className="bg-gray-100 font-mono px-6 mt-2 py-4 text-base rounded-lg w-full shadow-inner focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter OTP"
+            />
+            <Link
+              to="/captain-riding"
+              className="w-full max-w-md h-12 bg-green-600 mt-2 text-white font-semibold flex items-center justify-center rounded-lg hover:bg-green-700 transition-all shadow-xl focus:ring-4 focus:ring-green-300 focus:outline-none"
+            >
+              Confirm
+            </Link>
+
+            {/* Cancel Button */}
+            <button
+              onClick={() => {
+                props.setConfirmRidePopupPanel(false);
+                props.setRidePopupPanel(false);
+              }}
+              className="w-full max-w-md mt-2 h-12 bg-red-500 text-white font-semibold flex items-center justify-center rounded-lg hover:bg-red-600 transition-all shadow-xl focus:ring-4 focus:ring-red-300 focus:outline-none"
+            >
+              Cancel
+            </button>
+          </form>
         </div>
       </div>
     </div>
