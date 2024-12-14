@@ -1,6 +1,6 @@
-const mongoos = require("mongoose");
+const mongoose = require("mongoose");
 
-const blacklistTokenSchema = new mongoos.Schema({
+const blacklistTokenSchema = new mongoose.Schema({
   token: {
     type: String,
     required: true,
@@ -13,4 +13,7 @@ const blacklistTokenSchema = new mongoos.Schema({
   },
 });
 
-module.exports = mongoos.model("blacklistToken", blacklistTokenSchema);
+// Check if the model already exists before defining it
+module.exports =
+  mongoose.models.blacklistToken ||
+  mongoose.model("blacklistToken", blacklistTokenSchema);
