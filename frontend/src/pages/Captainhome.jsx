@@ -1,97 +1,149 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import CaptainDetails from "../components/CaptainDetails";
-import RidePopup from "../components/RidePopup";
+import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import RidePopup from "../components/RidePopup";
+import { useEffect, useContext } from "react";
+import { SocketContext } from "../context/SocketContext";
+import axios from "axios";
+import { CaptainDataContext } from "../context/CapatainContext";
+
 import ConfirmRidePopup from "../components/ConfirmRidePopup";
+import RidePopUp from "../components/RidePopup";
+import ConfirmRidePopUp from "../components/ConfirmRidePopup";
 
-const Captainhome = () => {
-  const [ridePopupPanel, setRidePopupPanel] = useState(true);
-  const [confirmridePopupPanel, setConfirmRidePopupPanel] = useState(false);
+const CaptainHome = () => {
+  const [ridePopupPanel, setRidePopupPanel] = useState(false);
+  const [confirmRidePopupPanel, setConfirmRidePopupPanel] = useState(false);
 
-  const ridePopupPanelRef = React.useRef(null);
-  const confirmridePopupPanelRef = React.useRef(null);
+  const ridePopupPanelRef = useRef(null);
+  const confirmRidePopupPanelRef = useRef(null);
+  const [ride, setRide] = useState(null);
 
-  React.useLayoutEffect(() => {
-    if (ridePopupPanel) {
-      gsap.to(ridePopupPanelRef.current, {
-        transform: "translateY(0)",
-        duration: 0.5,
-        ease: "power2.out",
-      });
-    } else {
-      gsap.to(ridePopupPanelRef.current, {
-        transform: "translateY(100%)",
-        duration: 0.5,
-        ease: "power2.in",
-      });
-    }
-  }, [ridePopupPanel]);
+  const { socket } = useContext(SocketContext);
+  const { captain } = useContext(CaptainDataContext);
 
-  React.useLayoutEffect(() => {
-    if (confirmridePopupPanel) {
-      gsap.to(confirmridePopupPanelRef.current, {
-        transform: "translateY(0)",
-        duration: 0.5,
-        ease: "power2.out",
-      });
-    } else {
-      gsap.to(confirmridePopupPanelRef.current, {
-        transform: "translateY(100%)",
-        duration: 0.5,
-        ease: "power2.in",
-      });
-    }
-  }, [confirmridePopupPanel]);
+  useEffect(() => {
+    socket.emit("join", {
+      userId: captain._id,
+      userType: "captain",
+    });
+    const updateLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          socket.emit("update-location-captain", {
+            userId: captain._id,
+            location: {
+              ltd: position.coords.latitude,
+              lng: position.coords.longitude,
+            },
+          });
+        });
+      }
+    };
+
+    const locationInterval = setInterval(updateLocation, 10000);
+    updateLocation();
+
+    // return () => clearInterval(locationInterval)
+  }, []);
+
+  socket.on("new-ride", (data) => {
+    setRide(data);
+    setRidePopupPanel(true);
+  });
+
+  async function confirmRide() {
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/rides/confirm`,
+      {
+        rideId: ride._id,
+        captainId: captain._id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+
+    setRidePopupPanel(false);
+    setConfirmRidePopupPanel(true);
+  }
+
+  useGSAP(
+    function () {
+      if (ridePopupPanel) {
+        gsap.to(ridePopupPanelRef.current, {
+          transform: "translateY(0)",
+        });
+      } else {
+        gsap.to(ridePopupPanelRef.current, {
+          transform: "translateY(100%)",
+        });
+      }
+    },
+    [ridePopupPanel]
+  );
+
+  useGSAP(
+    function () {
+      if (confirmRidePopupPanel) {
+        gsap.to(confirmRidePopupPanelRef.current, {
+          transform: "translateY(0)",
+        });
+      } else {
+        gsap.to(confirmRidePopupPanelRef.current, {
+          transform: "translateY(100%)",
+        });
+      }
+    },
+    [confirmRidePopupPanel]
+  );
 
   return (
-    <div className="h-screen bg-gray-100">
-      {/* Transparent Header Section with Logo and Logout Button */}
-      <div className="fixed w-full p-4 top-0 bg-transparent z-20">
-        <div className="flex justify-between items-center">
-          <h1 className="text-4xl font-bold text-indigo-700 tracking-tight">
-            Cabify
-          </h1>
-          <Link
-            to="/home"
-            className="h-12 w-12 bg-indigo-600 text-white flex items-center justify-center rounded-full shadow-lg transition-transform transform hover:scale-105 hover:shadow-2xl"
-          >
-            <i className="ri-logout-box-r-line text-xl"></i>
-          </Link>
-        </div>
-      </div>
-
-      {/* Background Image Section */}
-      <div className="h-3/5 p-6">
+    <div className="h-screen">
+      <div className="fixed p-6 top-0 flex items-center justify-between w-screen">
         <img
-          className="h-full w-full object-cover rounded-xl shadow-lg"
-          src="https://simonpan.com/wp-content/themes/sp_portfolio/assets/uber-challenge.jpg"
-          alt="Cab Background"
+          className="w-16"
+          src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png"
+          alt=""
+        />
+        <Link
+          to="/captain-home"
+          className=" h-10 w-10 bg-white flex items-center justify-center rounded-full"
+        >
+          <i className="text-lg font-medium ri-logout-box-r-line"></i>
+        </Link>
+      </div>
+      <div className="h-3/5">
+        <img
+          className="h-full w-full object-cover"
+          src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
+          alt=""
         />
       </div>
-
-      {/* Captain Details Section */}
-      <div className="h-2/5 p-6 bg-white rounded-xl shadow-md mb-6">
+      <div className="h-2/5 p-6">
         <CaptainDetails />
       </div>
-
-      {/* Ride Popup Section */}
       <div
         ref={ridePopupPanelRef}
-        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-6 py-6 rounded-t-3xl shadow-lg"
+        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12"
       >
-        <RidePopup
+        <RidePopUp
+          ride={ride}
           setRidePopupPanel={setRidePopupPanel}
           setConfirmRidePopupPanel={setConfirmRidePopupPanel}
+          confirmRide={confirmRide}
         />
       </div>
-
-      {/* Confirm Ride Popup Section */}
       <div
-        ref={confirmridePopupPanelRef}
-        className="fixed w-full h-screen z-10 bottom-0 translate-y-full bg-white px-6 py-6 rounded-t-3xl shadow-lg"
+        ref={confirmRidePopupPanelRef}
+        className="fixed w-full h-screen z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12"
       >
-        <ConfirmRidePopup
+        <ConfirmRidePopUp
+          ride={ride}
           setConfirmRidePopupPanel={setConfirmRidePopupPanel}
           setRidePopupPanel={setRidePopupPanel}
         />
@@ -100,4 +152,4 @@ const Captainhome = () => {
   );
 };
 
-export default Captainhome;
+export default CaptainHome;

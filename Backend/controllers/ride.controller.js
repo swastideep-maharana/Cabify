@@ -13,37 +13,46 @@ module.exports.createRide = async (req, res) => {
   const { userId, pickup, destination, vehicleType } = req.body;
 
   try {
+    // Step 1: Create the ride and send the response
     const ride = await rideService.createRide({
       user: req.user._id,
       pickup,
       destination,
       vehicleType,
     });
+
+    // Send the response first
     res.status(201).json(ride);
 
+    // Step 2: Now perform other operations asynchronously
     const pickupCoordinates = await mapService.getAddressCoordinate(pickup);
-
     const captainsInRadius = await mapService.getCaptainsInTheRadius(
       pickupCoordinates.ltd,
       pickupCoordinates.lng,
       2
     );
 
+    // Remove OTP from ride
     ride.otp = "";
 
+    // Get the ride with user details
     const rideWithUser = await rideModel
       .findOne({ _id: ride._id })
       .populate("user");
 
-    captainsInRadius.map((captain) => {
+    // Step 3: Send the new ride event to captains
+    captainsInRadius.forEach((captain) => {
       sendMessageToSocketId(captain.socketId, {
         event: "new-ride",
         data: rideWithUser,
       });
     });
   } catch (err) {
-    console.log(err);
-    return res.status(500).json({ message: err.message });
+    // Ensure headers are not already sent before responding
+    if (!res.headersSent) {
+      console.log(err);
+      return res.status(500).json({ message: err.message });
+    }
   }
 };
 
@@ -137,5 +146,4 @@ module.exports.endRide = async (req, res) => {
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
-  s;
 };

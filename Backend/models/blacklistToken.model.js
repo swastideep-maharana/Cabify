@@ -9,11 +9,8 @@ const blacklistTokenSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-    expires: 86400, // 1 day
+    expires: 86400, // 24 hours in seconds
   },
 });
 
-// Check if the model already exists before defining it
-module.exports =
-  mongoose.models.blacklistToken ||
-  mongoose.model("blacklistToken", blacklistTokenSchema);
+module.exports = mongoose.model("BlacklistToken", blacklistTokenSchema);

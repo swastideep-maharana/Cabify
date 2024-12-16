@@ -2,51 +2,53 @@ import React from "react";
 
 const LookingForDriver = (props) => {
   return (
-    <div className="p-6 bg-gradient-to-r from-purple-300 via-purple-200 to-purple-100 rounded-lg shadow-xl h-full w-full max-w-full flex flex-col">
+    <div className="relative bg-gradient-to-t from-indigo-100 to-indigo-300 p-6 rounded-lg shadow-lg">
+      {/* Close Button */}
       <h5
-        className="absolute top-0 left-1/2 transform -translate-x-1/2 cursor-pointer p-2"
+        className="p-1 text-center w-[93%] absolute top-0"
         onClick={() => {
           props.setVehicleFound(false);
         }}
       >
-        <i className="text-4xl ri-arrow-down-circle-line text-black hover:text-gray-700"></i>
+        <i className="text-3xl text-gray-200 ri-arrow-down-wide-line hover:text-gray-500 transition-colors cursor-pointer"></i>
       </h5>
-      <h3 className="text-4xl font-bold text-center text-gray-900 mb-8">Looking for a Driver</h3>
+      <h3 className="text-2xl font-semibold mb-5 text-indigo-600 text-center">Looking for a Driver</h3>
 
-      <div className="flex flex-col space-y-6">
-        {/* Driver Details */}
-        <div className="flex bg-white rounded-2xl p-4 items-center shadow-lg hover:shadow-xl transition-all transform hover:scale-105 cursor-pointer">
-          <img
-            className="h-16 w-16 object-cover rounded-full border-2 border-gray-200"
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdc1aAZzBJjW2GhT0TquUROYNGjc-8j6cSNeafEQAIpAOFJPXdwH_DrnzTOVen5HoFDRc&usqp=CAU"
-            alt="Driver"
-          />
-          <div className="ml-4 flex-1">
-            <h4 className="font-semibold text-xl text-gray-900">Driver Name</h4>
-            <p className="text-sm text-gray-600">Available for ride</p>
-          </div>
-        </div>
-
-        {/* Pickup and Drop Details */}
-        <div className="flex flex-col bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
-          <div className="flex items-center gap-5 p-3 border-b-2">
-            <i className="text-lg ri-map-pin-user-fill"></i>
+      <div className="flex gap-2 justify-between flex-col items-center">
+        {/* Ride Image */}
+        <img
+          className="h-20 rounded-lg shadow-xl border-4 border-indigo-400 transform transition-transform duration-300 hover:scale-105"
+          src="https://swyft.pl/wp-content/uploads/2023/05/how-many-people-can-a-uberx-take.jpg"
+          alt="Ride"
+        />
+        
+        {/* Ride Details */}
+        <div className="w-full mt-5 space-y-3">
+          {/* Pickup Location */}
+          <div className="flex items-center gap-5 p-3 border-b-2 border-gray-300 hover:bg-indigo-50 rounded-lg transition-all">
+            <i className="ri-map-pin-user-fill text-green-500"></i>
             <div>
-              <h3 className="text-lg font-medium">562/11-A</h3>
-              <p className="text-sm -mt-1 text-gray-600">Kankariya Talb, Bhopal</p>
+              <h3 className="text-lg font-medium text-gray-800">{props.pickup}</h3>
+              <p className="text-sm -mt-1 text-gray-600">{props.pickup}</p>
             </div>
           </div>
-          <div className="flex items-center gap-5 p-3 border-b-2">
-            <i className="text-lg ri-map-pin-2-fill"></i>
+
+          {/* Destination Location */}
+          <div className="flex items-center gap-5 p-3 border-b-2 border-gray-300 hover:bg-indigo-50 rounded-lg transition-all">
+            <i className="text-lg ri-map-pin-2-fill text-blue-500"></i>
             <div>
-              <h3 className="text-lg font-medium">562/11-A</h3>
-              <p className="text-sm -mt-1 text-gray-600">Kankariya Talb, Bhopal</p>
+              <h3 className="text-lg font-medium text-gray-800">{props.destination}</h3>
+              <p className="text-sm -mt-1 text-gray-600">{props.destination}</p>
             </div>
           </div>
-          <div className="flex items-center gap-5 p-3">
-            <i className="text-lg ri-currency-fill"></i>
+
+          {/* Fare Information */}
+          <div className="flex items-center gap-5 p-3 hover:bg-indigo-50 rounded-lg transition-all">
+            <i className="ri-currency-line text-yellow-500"></i>
             <div>
-              <h3 className="text-lg font-medium">₹193.20</h3>
+              <h3 className="text-lg font-medium text-gray-800">
+                ₹{props.fare[props.vehicleType]}{" "}
+              </h3>
               <p className="text-sm -mt-1 text-gray-600">Cash Payment</p>
             </div>
           </div>

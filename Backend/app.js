@@ -5,10 +5,10 @@ const cors = require("cors");
 const app = express();
 const cookieParser = require("cookie-parser");
 const connectToDb = require("./db/db");
-const userRouts = require("./routes/user.routes");
-const captainRouts = require("./routes/captain.routes");
-const mapsRouts = require("./routes/maps.routes");
-const rideRouts = require("./routes/ride.routes");
+const userRoutes = require("./routes/user.routes");
+const captainRoutes = require("./routes/captain.routes");
+const mapsRoutes = require("./routes/maps.routes");
+const rideRoutes = require("./routes/ride.routes");
 
 connectToDb();
 
@@ -18,12 +18,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.get("/", (req, res) => {
-  res.send("Hello1 World!");
+  res.send("Hello World");
 });
 
-app.use("/users", userRouts);
-app.use("/captains", captainRouts);
-app.use("/maps", mapsRouts);
-app.use("/rides", rideRouts);
+app.use("/users", userRoutes);
+app.use("/captains", captainRoutes);
+app.use("/maps", mapsRoutes);
+app.use("/rides", rideRoutes);
 
 module.exports = app;
