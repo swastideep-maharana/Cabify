@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserDataContext } from "../context/UserContext";
@@ -13,6 +13,7 @@ const UserSignup = () => {
   const navigate = useNavigate();
 
   const { user, setUser } = useContext(UserDataContext);
+
   const submitHandler = async (e) => {
     e.preventDefault();
     const newUser = {
@@ -20,8 +21,8 @@ const UserSignup = () => {
         firstname: firstName,
         lastname: lastName,
       },
-      email,
-      password,
+      email: email,
+      password: password,
     };
 
     const response = await axios.post(
@@ -31,7 +32,6 @@ const UserSignup = () => {
 
     if (response.status === 201) {
       const data = response.data;
-
       setUser(data.user);
       localStorage.setItem("token", data.token);
       navigate("/home");
@@ -42,104 +42,89 @@ const UserSignup = () => {
     setLastName("");
     setPassword("");
   };
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-200 via-teal-200 to-cyan-300 relative overflow-hidden">
-      {/* Background Decorations */}
-      <div className="absolute top-10 left-10 w-80 h-80 bg-cyan-100 opacity-30 rounded-full blur-3xl -z-10"></div>
-      <div className="absolute bottom-10 right-10 w-80 h-80 bg-blue-100 opacity-30 rounded-full blur-3xl -z-10"></div>
+    <div>
+      <div className="p-7 h-screen flex flex-col justify-between">
+        <div>
+          <img
+            className="w-16 mb-10"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYQy-OIkA6In0fTvVwZADPmFFibjmszu2A0g&s"
+            alt=""
+          />
 
-      {/* Signup Form */}
-      <div className="bg-white p-8 sm:p-12 rounded-xl shadow-lg w-full max-w-lg mx-auto z-20">
-        <header className="mb-6 text-center">
-          <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
-            Cabify
-          </h1>
-        </header>
-
-        <form onSubmit={submitHandler}>
-          <h2 className="text-xl font-medium text-gray-800 mb-4 text-center">
-            Create an Account
-          </h2>
-          <p className="text-gray-600 mb-6 text-center text-sm">
-            Sign up to join our community and explore your journey with us.
-          </p>
-
-          {/* Name Input */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-800 mb-2">
-              Full Name
-            </label>
-            <div className="flex gap-4">
+          <form
+            onSubmit={(e) => {
+              submitHandler(e);
+            }}
+          >
+            <h3 className="text-lg w-1/2  font-medium mb-2">
+              What's your name
+            </h3>
+            <div className="flex gap-4 mb-7">
               <input
                 required
-                className="w-1/2 bg-gray-100 rounded-lg px-4 py-2 border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all"
+                className="bg-[#eeeeee] w-1/2 rounded-lg px-4 py-2 border  text-lg placeholder:text-base"
                 type="text"
                 placeholder="First name"
                 value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
+                onChange={(e) => {
+                  setFirstName(e.target.value);
+                }}
               />
               <input
                 required
-                className="w-1/2 bg-gray-100 rounded-lg px-4 py-2 border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all"
+                className="bg-[#eeeeee] w-1/2  rounded-lg px-4 py-2 border  text-lg placeholder:text-base"
                 type="text"
                 placeholder="Last name"
                 value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                onChange={(e) => {
+                  setLastName(e.target.value);
+                }}
               />
             </div>
-          </div>
 
-          {/* Email Input */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-800 mb-2">
-              Email Address
-            </label>
+            <h3 className="text-lg font-medium mb-2">What's your email</h3>
             <input
               required
-              className="w-full bg-gray-100 rounded-lg px-4 py-2 border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+              className="bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base"
               type="email"
               placeholder="email@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
             />
-          </div>
 
-          {/* Password Input */}
-          <div className="mb-8">
-            <label className="block text-sm font-medium text-gray-800 mb-2">
-              Password
-            </label>
+            <h3 className="text-lg font-medium mb-2">Enter Password</h3>
+
             <input
-              required
-              className="w-full bg-gray-100 rounded-lg px-4 py-2 border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all"
-              type="password"
-              placeholder="Enter your password"
+              className="bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+              required
+              type="password"
+              placeholder="password"
             />
-          </div>
 
-          {/* Submit Button */}
-          <button className="w-full bg-teal-600 text-white text-sm font-medium py-2 rounded-lg hover:bg-teal-700 transition-all duration-300 transform hover:scale-105">
-            Create Account
-          </button>
-
-          <p className="text-center mt-6 text-sm text-gray-600">
-            Already have an account?{" "}
-            <Link
-              to="/login"
-              className="text-teal-600 font-medium hover:text-teal-700"
-            >
-              Login
+            <button className="bg-[#111] text-white font-semibold mb-3 rounded-lg px-4 py-2 w-full text-lg placeholder:text-base">
+              Create account
+            </button>
+          </form>
+          <p className="text-center">
+            Already have a account?{" "}
+            <Link to="/login" className="text-blue-600">
+              Login here
             </Link>
           </p>
-        </form>
-
-        <div className="mt-4 text-xs text-gray-500 text-center">
-          This site is protected by reCAPTCHA and the{" "}
-          <span className="underline">Google Privacy Policy</span> and{" "}
-          <span className="underline">Terms of Service apply</span>.
+        </div>
+        <div>
+          <p className="text-[10px] leading-tight">
+            This site is protected by reCAPTCHA and the{" "}
+            <span className="underline">Google Privacy Policy</span> and{" "}
+            <span className="underline">Terms of Service apply</span>.
+          </p>
         </div>
       </div>
     </div>

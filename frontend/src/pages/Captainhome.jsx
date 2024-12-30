@@ -1,17 +1,14 @@
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import CaptainDetails from "../components/CaptainDetails";
+import RidePopUp from "../components/RidePopUp";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import RidePopup from "../components/RidePopup";
+import ConfirmRidePopUp from "../components/ConfirmRidePopUp";
 import { useEffect, useContext } from "react";
 import { SocketContext } from "../context/SocketContext";
-import axios from "axios";
 import { CaptainDataContext } from "../context/CapatainContext";
-
-import ConfirmRidePopup from "../components/ConfirmRidePopup";
-import RidePopUp from "../components/RidePopup";
-import ConfirmRidePopUp from "../components/ConfirmRidePopup";
+import axios from "axios";
 
 const CaptainHome = () => {
   const [ridePopupPanel, setRidePopupPanel] = useState(false);

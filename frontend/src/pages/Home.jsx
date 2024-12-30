@@ -41,26 +41,20 @@ const Home = () => {
   const { user } = useContext(UserDataContext);
 
   useEffect(() => {
-    // Ensure user is defined before emitting the 'join' event
-    if (user && user._id) {
-      socket.emit("join", { userType: "user", userId: user._id });
-    }
-  }, [user, socket]); // Added socket as a dependency
+    socket.emit("join", { userType: "user", userId: user._id });
+  }, [user]);
 
-  useEffect(() => {
-    // Listeners for ride updates
-    socket.on("ride-confirmed", (ride) => {
-      setVehicleFound(false);
-      setWaitingForDriver(true);
-      setRide(ride);
-    });
+  socket.on("ride-confirmed", (ride) => {
+    setVehicleFound(false);
+    setWaitingForDriver(true);
+    setRide(ride);
+  });
 
-    socket.on("ride-started", (ride) => {
-      console.log("ride");
-      setWaitingForDriver(false);
-      navigate("/riding", { state: { ride } });
-    });
-  }, [socket, navigate]);
+  socket.on("ride-started", (ride) => {
+    console.log("ride");
+    setWaitingForDriver(false);
+    navigate("/riding", { state: { ride } }); // Updated navigate to include ride data
+  });
 
   const handlePickupChange = async (e) => {
     setPickup(e.target.value);
@@ -108,6 +102,7 @@ const Home = () => {
         gsap.to(panelRef.current, {
           height: "70%",
           padding: 24,
+          // opacity:1
         });
         gsap.to(panelCloseRef.current, {
           opacity: 1,
@@ -116,6 +111,7 @@ const Home = () => {
         gsap.to(panelRef.current, {
           height: "0%",
           padding: 0,
+          // opacity:0
         });
         gsap.to(panelCloseRef.current, {
           opacity: 0,
@@ -226,9 +222,10 @@ const Home = () => {
         alt=""
       />
       <div className="h-screen w-screen">
+        {/* image for temporary use  */}
         <LiveTracking />
       </div>
-      <div className="flex flex-col justify-end h-screen absolute top-0 w-full">
+      <div className=" flex flex-col justify-end h-screen absolute top-0 w-full">
         <div className="h-[30%] p-6 bg-white relative">
           <h5
             ref={panelCloseRef}
@@ -332,12 +329,13 @@ const Home = () => {
       </div>
       <div
         ref={waitingForDriverRef}
-        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12"
+        className="fixed w-full  z-10 bottom-0  bg-white px-3 py-6 pt-12"
       >
         <WaitingForDriver
           ride={ride}
-          fare={fare}
+          setVehicleFound={setVehicleFound}
           setWaitingForDriver={setWaitingForDriver}
+          waitingForDriver={waitingForDriver}
         />
       </div>
     </div>

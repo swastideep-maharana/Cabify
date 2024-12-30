@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { UserDataContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const UserLogin = () => {
   const [email, setEmail] = useState("");
@@ -37,95 +37,62 @@ const UserLogin = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-pink-200 via-purple-200 to-indigo-300 relative overflow-hidden">
-      {/* Background Decorations */}
-      <div className="absolute top-10 left-10 w-80 h-80 bg-yellow-100 opacity-30 rounded-full blur-3xl -z-10"></div>
-      <div className="absolute bottom-10 right-10 w-80 h-80 bg-green-100 opacity-30 rounded-full blur-3xl -z-10"></div>
+    <div className="p-7 h-screen flex flex-col justify-between">
+      <div>
+        <img
+          className="w-16 mb-10"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYQy-OIkA6In0fTvVwZADPmFFibjmszu2A0g&s"
+          alt=""
+        />
 
-      {/* Login Form */}
-      <div className="bg-white p-8 sm:p-12 rounded-xl shadow-lg w-full max-w-lg mx-auto z-20">
-        <header className="mb-6 text-center">
-          <h1 className="text-4xl font-semibold text-gray-900 tracking-tight">
-            Cabify
-          </h1>
-        </header>
+        <form
+          onSubmit={(e) => {
+            submitHandler(e);
+          }}
+        >
+          <h3 className="text-lg font-medium mb-2">What's your email</h3>
+          <input
+            required
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+            className="bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base"
+            type="email"
+            placeholder="email@example.com"
+          />
 
-        <form onSubmit={submitHandler}>
-          <h2 className="text-xl font-medium text-gray-800 mb-6 text-center">
-            Welcome Back!
-          </h2>
-          <p className="text-gray-600 mb-6 text-center text-base">
-            Log in to continue your journey with us.
-          </p>
+          <h3 className="text-lg font-medium mb-2">Enter Password</h3>
 
-          {/* Email Input */}
-          <div className="mb-6">
-            <label htmlFor="email" className="block text-base font-medium mb-2">
-              Email Address
-            </label>
-            <input
-              required
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-gray-100 rounded-lg px-4 py-3 border border-gray-300 text-gray-800 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200"
-              type="email"
-              placeholder="email@example.com"
-            />
-          </div>
+          <input
+            className="bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+            required
+            type="password"
+            placeholder="password"
+          />
 
-          {/* Password Input */}
-          <div className="mb-8">
-            <label
-              htmlFor="password"
-              className="block text-base font-medium mb-2"
-            >
-              Password
-            </label>
-            <input
-              required
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-gray-100 rounded-lg px-4 py-3 border border-gray-300 text-gray-800 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200"
-              type="password"
-              placeholder="Enter your password"
-            />
-          </div>
-
-          {/* Submit Button */}
-          <button className="w-full bg-pink-600 text-white text-lg font-medium py-3 rounded-lg hover:bg-pink-700 transition-all duration-300 transform hover:scale-105">
+          <button className="bg-[#111] text-white font-semibold mb-3 rounded-lg px-4 py-2 w-full text-lg placeholder:text-base">
             Login
           </button>
-
-          <p className="text-center mt-6 text-base text-gray-600">
-            New here?{" "}
-            <Link
-              to="/signup"
-              className="text-pink-600 font-medium hover:text-pink-700"
-            >
-              Create an Account
-            </Link>
-          </p>
         </form>
-
-        {/* Captain Login Link */}
-        <div className="mt-6 text-center">
-          <Link
-            to="/captain-login"
-            className="inline-block bg-green-500 text-white font-medium py-3 px-6 rounded-lg shadow-lg hover:bg-green-600 transition-all duration-300 transform hover:scale-105"
-          >
-            Sign in as Captain
+        <p className="text-center">
+          New here?{" "}
+          <Link to="/signup" className="text-blue-600">
+            Create new Account
           </Link>
-
-          <div>
-            <p className="text-[10px] leading-tight">
-              This site is protected by reCAPTCHA and the{" "}
-              <span className="underline">Google Privacy Policy</span> and{" "}
-              <span className="underline">Terms of Service apply</span>.
-            </p>
-          </div>
-        </div>
+        </p>
+      </div>
+      <div>
+        <Link
+          to="/captain-login"
+          className="bg-[#10b461] flex items-center justify-center text-white font-semibold mb-5 rounded-lg px-4 py-2 w-full text-lg placeholder:text-base"
+        >
+          Sign in as Captain
+        </Link>
       </div>
     </div>
   );
