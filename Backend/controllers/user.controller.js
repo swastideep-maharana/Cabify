@@ -2,8 +2,10 @@ const mongoose = require("mongoose");
 const userModel = require("../models/user.model");
 const userService = require("../services/user.service");
 const { validationResult } = require("express-validator");
-const blackListTokenModel = require("../models/blackListToken.model"); // Ensure this path is correct
 
+const { sendMessageToSocketId } = require("../socket");
+
+const blackListTokenModel = require("../models/blacklistToken.model");
 // Register a new user
 module.exports.registerUser = async (req, res, next) => {
   const errors = validationResult(req);
